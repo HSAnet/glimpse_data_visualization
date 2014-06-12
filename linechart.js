@@ -1,17 +1,21 @@
 function Chart() {
-
+//    necessary attributes
     this.ctx = undefined;
     this.x = undefined;
     this.y = undefined;
 
+//    default values
+//    total size
     this.width = 600;
     this.height = 200;
 
+//    horziontal and vertical axial annotation
     this.text_size = "15px";
     this.text_color = "rgba(0, 0, 255, 1)";
     this.text_x = "Pings";
     this.text_y = "Time (ms)";
 
+//    grid values
     this.matrix_linePaddingLeft = 0.1;
     this.matrix_lineColor = "rgba(0, 0, 0, 1)";
     this.matrix_scale_size = 30;
@@ -20,11 +24,15 @@ function Chart() {
     this.matrix_textSize = "10px";
     this.matrix_lineWidth = 0.3;
 
+//    graph values
     this.graph_linePaddingLeft = 0.1;
     this.graph_fillBottomArea = true;
     this.graph_showPoints = true;
     this.graph_pointDelta = 20;
     this.graph_lineWidth = 2;
+
+//    test data
+//    test color array
     this.graph_colorPairs = [
         ["rgba(0, 0, 255, 1)", "rgba(0, 0, 255, 0.2)"],
         ["rgba(255, 0, 0, 1)", "rgba(255, 0, 0, 0.2)"],
@@ -33,7 +41,7 @@ function Chart() {
         ["rgba(128, 128, 128, 1)", "rgba(128, 128, 128, 0.2)"],
     ];
 
-
+//    test inputdata array
     this.pointJSON = [
         [
             [30],
@@ -156,6 +164,7 @@ function Chart() {
         ]
     ];
 
+//    main chart draw function
     this.drawLineChart = function (x_kor, y_kor, context) {
         this.ctx = context;
         this.x = x_kor;
@@ -173,6 +182,7 @@ function Chart() {
         this.drawTextVertical(this.text_y, this.text_color, this.text_size);
     }
 
+//    draw background grid
     this.drawMatrix = function () {
         var matrix_height = this.height * 0.9;
         var matrix_width = this.width;
@@ -184,6 +194,7 @@ function Chart() {
         }
     }
 
+//    draw whole graph
     this.drawLineGraph = function (lineColor, pointJSON, fillColor) {
         var graph_heigth = this.y + this.height * 0.9; //still not used
         var graph_lineStartLeft = this.x + this.width * this.graph_linePaddingLeft;
@@ -193,6 +204,7 @@ function Chart() {
         }
     }
 
+//    draw graph lines
     this.drawLineGraphLines = function (graph_heigth, pointOffset, color, pointJSON, fillColor) {
         var startPointOffset = pointOffset;
         this.ctx.beginPath();
@@ -218,6 +230,7 @@ function Chart() {
         }
     }
 
+//    draw rectangles on lines
     this.drawLineGraphRectangles = function (graph_heigth, pointOffset, pointJSON) {
         for (var i = 0; i < pointJSON.length; i++) {
             this.drawRectangle(pointOffset, graph_heigth - pointJSON[i][0], 5, 5, 2, "black", "black");
@@ -225,6 +238,7 @@ function Chart() {
         }
     }
 
+//    draw single line
     this.drawLine = function (line_start_x, line_start_y, line_end_x, line_end_y, line_width, line_color) {
         this.ctx.strokeStyle = line_color;
         this.ctx.lineWidth = line_width;
@@ -235,6 +249,7 @@ function Chart() {
         this.ctx.closePath();
     }
 
+//    draw subsequently line
     this.drawContinuesLine = function (continuesLine_end_x, continuesLine_end_y) {
         this.ctx.lineTo(continuesLine_end_x, continuesLine_end_y);
     }
@@ -257,7 +272,6 @@ function Chart() {
         this.ctx.font = textVertical_size + ' Ubuntu';
         this.ctx.fillStyle = textVertical_color;
         this.ctx.rotate((-Math.PI / 2));
-//    this.ctx.fillText(textVertical_text, this.x-text_width.width/2, -this.y);
         this.ctx.fillText(textVertical_text, -(this.y + this.height / 2 + text_width.width / 2), this.x + 15);
     }
 }
