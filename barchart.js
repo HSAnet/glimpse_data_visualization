@@ -1,4 +1,4 @@
-function Chart() {
+function BarChart() {
 //    necessary attributes
     this.ctx = undefined;
     this.x = undefined;

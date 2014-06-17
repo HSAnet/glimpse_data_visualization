@@ -1,4 +1,4 @@
-function Chart() {
+function LineChart() {
 //    necessary attributes
     this.ctx = undefined;
     this.x = undefined;
