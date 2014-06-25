@@ -19,6 +19,9 @@ function BarChart() {
     this.matrix_linePaddingLeft = 0.1;
     this.matrix_lineColor = "rgba(0, 0, 0, 1)";
     this.matrix_scale_size = 30;
+    this.matrix_scale_steps = 40;
+    this.matrix_auto_scale = true;
+    this.matrix_auto_scale_number_of_lines = 5;
     this.matrix_textPaddingLeft = 0.5;
     this.matrix_textColor = "black";
     this.matrix_textSize = "10px";
@@ -53,7 +56,7 @@ function BarChart() {
             [80],
             [120],
             [110],
-            [80],
+            [80]
     ];
 
 //    main chart draw function
@@ -62,18 +65,39 @@ function BarChart() {
         this.x = x_kor;
         this.y = y_kor;
 
+        if (this.matrix_auto_scale) {
+            this.matrixAutoScale();
+        }
         this.drawMatrix();
 
         var graph_barStartLeft = this.x + this.width * this.graph_barStartPaddingLeft;
         for (var i = 0; i < this.valueJSON.length; i++) {
             var colorPair = this.graph_colorPairs[i % this.graph_colorPairs.length];
             var graph_barStartLeft = graph_barStartLeft + this.graph_barDelta + this.graph_barWidth;
-            this.drawBar(this.valueJSON[i], graph_barStartLeft, colorPair[0], colorPair[1]);
+            this.drawBar(this.matrixScaleTranslation(this.valueJSON[i][0]), graph_barStartLeft, colorPair[0], colorPair[1]);
         }
 
         this.drawTextHorizontal(this.x + this.width / 2, this.y + this.height, this.text_x, this.text_color, this.text_size);
         this.drawTextVertical(this.text_y, this.text_color, this.text_size);
     }
+
+// calculates the value to the shown pixel
+    this.matrixScaleTranslation = function (value) {
+        return (value/this.matrix_scale_steps)*this.matrix_scale_size;
+    }
+
+// automatically scalles the matrix by the max value
+    this.matrixAutoScale = function () {
+        var max = 0;
+        for (var i = 0; i < this.valueJSON.length; i++) {
+                if (max < this.valueJSON[i][0]) {
+                    max = this.valueJSON[i][0];
+                }
+        };
+        this.matrix_scale_size = this.height*0.8/this.matrix_auto_scale_number_of_lines;
+        this.matrix_scale_steps = max/this.matrix_auto_scale_number_of_lines;
+    }
+
 
 //    draw background grid
     this.drawMatrix = function () {
@@ -83,7 +107,7 @@ function BarChart() {
         for (var i = matrix_height + this.y; i > 0 + this.y; i = i - this.matrix_scale_size) {
             this.drawLine(this.x + matrix_width * this.matrix_linePaddingLeft, i, this.x + matrix_width, i, this.matrix_lineWidth, this.matrix_lineColor);
             this.drawTextHorizontal(this.x + matrix_width * this.matrix_linePaddingLeft * this.matrix_textPaddingLeft, i, lineNumber, this.matrix_textColor, this.matrix_textSize);
-            lineNumber = lineNumber + this.matrix_scale_size;
+            lineNumber = lineNumber + this.matrix_scale_steps;
         }
     }
 
@@ -93,8 +117,8 @@ function BarChart() {
         this.ctx.lineWidth = this.graph_lineWidth;
         this.ctx.beginPath();
         this.ctx.moveTo(barXPosition, graph_heigth);
-        this.ctx.lineTo(barXPosition, valueJSON);
-        this.ctx.lineTo(barXPosition + this.graph_barWidth, valueJSON);
+        this.ctx.lineTo(barXPosition, graph_heigth-valueJSON);
+        this.ctx.lineTo(barXPosition + this.graph_barWidth, graph_heigth-valueJSON);
         this.ctx.lineTo(barXPosition + this.graph_barWidth, graph_heigth);
         this.ctx.closePath();
         this.ctx.stroke();
