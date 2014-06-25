@@ -47,6 +47,13 @@ Rectangle {
 
 ```
 
+###auto scale
+
+There are several problems when it comes to display very vary values. The auto scale function adjust the matrix height and scale to the maximum value of the input data. Additionally the scale numbers could be rounded because if they get small by value they will be too large to display.
+
+You should always consider that if you have high values combined with really lower values it will be hard to see the difference between the low values.
+
+
 ---
 ###linechart.js
 
@@ -88,7 +95,11 @@ attribute | description | default value
 --- | --- | ---
 matrix_linePaddingLeft | gap between line entity and matrix line | 0.1
 matrix_lineColor | color of the matrix line | "rgba(0, 0, 0, 1)"
-matrix_scale_size | steps between matrix lines | 30
+matrix_scale_size | distance steps between matrix lines | 30
+matrix_scale_steps | value steps between matrix lines | 40
+matrix_scale_round_digits | number of digits to round the steps values to (important for auto scale) | 2
+matrix_auto_scale | automatically scale the matrix to the maximum of the input data | true
+matrix_auto_scale_number_of_lines | number of lines to use for auto scale | 5
 matrix_textPaddingLeft | gap between line entity and left border | 0.5
 matrix_textColor | entity text color | "black"
 matrix_textSize | entity text size | "10px"
@@ -171,7 +182,11 @@ attribute | description | default value
 --- | --- | ---
 matrix_linePaddingLeft | gap between line entity and matrix line | 0.1
 matrix_lineColor | color of the matrix line | "rgba(0, 0, 0, 1)"
-matrix_scale_size | steps between matrix lines | 30
+matrix_scale_size | distance steps between matrix lines | 30
+matrix_scale_steps | value steps between matrix lines | 40
+matrix_scale_round_digits | number of digits to round the steps values to (important for auto scale) | 2
+matrix_auto_scale | automatically scale the matrix to the maximum of the input data | true
+matrix_auto_scale_number_of_lines | number of lines to use for auto scale | 5
 matrix_textPaddingLeft | gap between line entity and left border | 0.5
 matrix_textColor | entity text color | "black"
 matrix_textSize | entity text size | "10px"
