@@ -20,6 +20,7 @@ function LineChart() {
     this.matrix_lineColor = "rgba(0, 0, 0, 1)";
     this.matrix_scale_size = 30;
     this.matrix_scale_steps = 40;
+    this.matrix_scale_round_digits = 2;
     this.matrix_auto_scale = true;
     this.matrix_auto_scale_number_of_lines = 5;
     this.matrix_textPaddingLeft = 0.5;
@@ -204,6 +205,13 @@ function LineChart() {
         this.matrix_scale_steps = max/this.matrix_auto_scale_number_of_lines;
     }
 
+// rounds number to n digits
+    this.roundNumber = function (number,n){
+        var factor;
+        factor = Math.pow(10,n);
+        return (Math.round(number * factor) / factor);
+    }
+
 //    draw background grid
     this.drawMatrix = function () {
         var matrix_height = this.height * 0.9;
@@ -214,7 +222,7 @@ function LineChart() {
         }
         for (var i = matrix_height + this.y; i > 0 + this.y; i = i - this.matrix_scale_size) {
             this.drawLine(this.x + matrix_width * this.matrix_linePaddingLeft, i, this.x + matrix_width, i, this.matrix_lineWidth, this.matrix_lineColor);
-            this.drawTextHorizontal(this.x + matrix_width * this.matrix_linePaddingLeft * this.matrix_textPaddingLeft, i, lineNumber, this.matrix_textColor, this.matrix_textSize);
+            this.drawTextHorizontal(this.x + matrix_width * this.matrix_linePaddingLeft * this.matrix_textPaddingLeft, i, this.roundNumber(lineNumber, this.matrix_scale_round_digits), this.matrix_textColor, this.matrix_textSize);
             lineNumber = lineNumber + this.matrix_scale_steps;
         }
     }
