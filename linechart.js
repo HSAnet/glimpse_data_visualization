@@ -19,6 +19,9 @@ function LineChart() {
     this.matrix_linePaddingLeft = 0.1;
     this.matrix_lineColor = "rgba(0, 0, 0, 1)";
     this.matrix_scale_size = 30;
+    this.matrix_scale_steps = 40;
+    this.matrix_auto_scale = true;
+    this.matrix_auto_scale_number_of_lines = 5;
     this.matrix_textPaddingLeft = 0.5;
     this.matrix_textColor = "black";
     this.matrix_textSize = "10px";
@@ -182,21 +185,43 @@ function LineChart() {
         this.drawTextVertical(this.text_y, this.text_color, this.text_size);
     }
 
+// calculates the value to the shown pixel
+    this.matrixScaleTranslation = function (value) {
+        return (value/this.matrix_scale_steps)*this.matrix_scale_size;
+    }
+
+// automatically scalles the matrix by the max value
+    this.matrixAutoScale = function () {
+        var max = 0;
+        for (var i = 0; i < this.pointJSON.length; i++) {
+            for(var n = 0; n < this.pointJSON[i].length; n++) {
+                if (max < this.pointJSON[i][n][0]) {
+                    max = this.pointJSON[i][n][0];
+                }
+            }
+        };
+        this.matrix_scale_size = this.height*0.8/this.matrix_auto_scale_number_of_lines;
+        this.matrix_scale_steps = max/this.matrix_auto_scale_number_of_lines;
+    }
+
 //    draw background grid
     this.drawMatrix = function () {
         var matrix_height = this.height * 0.9;
         var matrix_width = this.width;
         var lineNumber = 0;
+        if (this.matrix_auto_scale) {
+            this.matrixAutoScale();
+        }
         for (var i = matrix_height + this.y; i > 0 + this.y; i = i - this.matrix_scale_size) {
             this.drawLine(this.x + matrix_width * this.matrix_linePaddingLeft, i, this.x + matrix_width, i, this.matrix_lineWidth, this.matrix_lineColor);
             this.drawTextHorizontal(this.x + matrix_width * this.matrix_linePaddingLeft * this.matrix_textPaddingLeft, i, lineNumber, this.matrix_textColor, this.matrix_textSize);
-            lineNumber = lineNumber + this.matrix_scale_size;
+            lineNumber = lineNumber + this.matrix_scale_steps;
         }
     }
 
 //    draw whole graph
     this.drawLineGraph = function (lineColor, pointJSON, fillColor) {
-        var graph_heigth = this.y + this.height * 0.9; //still not used
+        var graph_heigth = this.y + this.height * 0.9;
         var graph_lineStartLeft = this.x + this.width * this.graph_linePaddingLeft;
         this.drawLineGraphLines(graph_heigth, graph_lineStartLeft, lineColor, pointJSON, fillColor);
         if (this.graph_showPoints) {
@@ -210,11 +235,11 @@ function LineChart() {
         this.ctx.beginPath();
         this.ctx.strokeStyle = color;
         this.ctx.lineWidth = this.graph_lineWidth;
-        this.ctx.moveTo(pointOffset, graph_heigth - pointJSON[0][0]);
+        this.ctx.moveTo(pointOffset, graph_heigth - this.matrixScaleTranslation(pointJSON[0][0]));
 
         for (var i = 0; i < pointJSON.length; i++) {
             if (i < pointJSON.length - 1) {
-                this.drawContinuesLine(pointOffset + this.graph_pointDelta, graph_heigth - pointJSON[i + 1][0]);
+                this.drawContinuesLine(pointOffset + this.graph_pointDelta, graph_heigth - this.matrixScaleTranslation(pointJSON[i + 1][0]));
             }
             pointOffset = pointOffset + this.graph_pointDelta;
         }
@@ -223,7 +248,7 @@ function LineChart() {
         if (this.graph_fillBottomArea) {
             this.drawContinuesLine(pointOffset - this.graph_pointDelta, graph_heigth);
             this.drawContinuesLine(startPointOffset, graph_heigth);
-            this.drawContinuesLine(startPointOffset, graph_heigth - pointJSON[0][0]);
+            this.drawContinuesLine(startPointOffset, graph_heigth - this.matrixScaleTranslation(pointJSON[0][0]));
             this.ctx.closePath();
             this.ctx.fillStyle = fillColor;
             this.ctx.fill();
@@ -233,7 +258,7 @@ function LineChart() {
 //    draw rectangles on lines
     this.drawLineGraphRectangles = function (graph_heigth, pointOffset, pointJSON) {
         for (var i = 0; i < pointJSON.length; i++) {
-            this.drawRectangle(pointOffset, graph_heigth - pointJSON[i][0], 5, 5, 2, "black", "black");
+            this.drawRectangle(pointOffset, graph_heigth - this.matrixScaleTranslation(pointJSON[i][0]), 5, 5, 2, "black", "black");
             pointOffset = pointOffset + this.graph_pointDelta;
         }
     }
