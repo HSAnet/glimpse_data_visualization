@@ -11,7 +11,8 @@ function LineChart() {
 
 //    horziontal and vertical axial annotation
     this.text_size = "15px";
-    this.text_color = "rgba(0, 0, 255, 1)";
+    this.text_color = "rgba(0, 0, 0, 1)";
+    this.text_font = "ubuntu";
     this.text_x = "Pings";
     this.text_y = "Time (ms)";
 
@@ -312,14 +313,14 @@ function LineChart() {
 
     this.drawTextHorizontal = function (textHorizontal_pos_x, textHorizontal_pos_y, textHorizontal_text, textHorizontal_color, textHorizontal_size) {
         var text_width = this.ctx.measureText(textHorizontal_text);
-        this.ctx.font = textHorizontal_size + ' Ubuntu';
+        this.ctx.font = textHorizontal_size + ' ' + this.text_font;
         this.ctx.fillStyle = textHorizontal_color;
         this.ctx.fillText(textHorizontal_text, textHorizontal_pos_x - text_width.width / 2, textHorizontal_pos_y);
     }
 
     this.drawTextVertical = function (textVertical_text, textVertical_color, textVertical_size) {
         var text_width = this.ctx.measureText(textVertical_text);
-        this.ctx.font = textVertical_size + ' Ubuntu';
+        this.ctx.font = textVertical_size + ' ' + this.text_font;
         this.ctx.fillStyle = textVertical_color;
         this.ctx.rotate((-Math.PI / 2));
         this.ctx.fillText(textVertical_text, -(this.y + this.height / 2 + text_width.width / 2), this.x + 15);
