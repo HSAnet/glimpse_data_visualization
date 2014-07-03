@@ -98,7 +98,7 @@ matrix_lineColor | color of the matrix line | "rgba(0, 0, 0, 1)"
 matrix_scale_size | distance steps between matrix lines | 30
 matrix_scale_steps | value steps between matrix lines | 40
 matrix_scale_round_digits | number of digits to round the steps values to (important for auto scale) | 2
-matrix_auto_scale | automatically scale the matrix to the maximum of the input data | true
+matrix_auto_scale | automatically scales the matrix to the maximum of the input data (overwrites matrix_scale_size and matrix_scale_steps) | true
 matrix_auto_scale_number_of_lines | number of lines to use for auto scale | 5
 matrix_textPaddingLeft | gap between line entity and left border | 0.5
 matrix_textColor | entity text color | "black"
@@ -113,6 +113,8 @@ graph_linePaddingLeft | gap between graph and left border | 0.1
 graph_fillBottomArea | fill area under the graph line | true 
 graph_showPoints | show black measure points on top of graph line | true 
 graph_pointDelta | gap between measure points | 20 
+graph_auto_scale_pointDelta | automatically scales the graph width to the width of the matrix (overwrites graph_pointDelta) | true
+graph_auto_scale_pointDelta_paddingRight | gap between rightist point and right end of the matrix | 5
 graph_lineWidth | graph line size | 2 
 graph_colorPairs | graph color pairs - line color - fill color | [ [ "rgba(0, 0, 255, 1)", "rgba(0, 0, 255, 0.2)" ],... ]
 

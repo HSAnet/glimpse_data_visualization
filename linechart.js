@@ -33,6 +33,8 @@ function LineChart() {
     this.graph_fillBottomArea = true;
     this.graph_showPoints = true;
     this.graph_pointDelta = 20;
+    this.graph_auto_scale_pointDelta = true;
+    this.graph_auto_scale_pointDelta_paddingRight = 5;
     this.graph_lineWidth = 2;
 
 //    test data
@@ -176,6 +178,9 @@ function LineChart() {
 
         this.drawMatrix();
 
+        if (this.graph_auto_scale_pointDelta) {
+            this.graphWidthAutoScale();
+        }
 
         for (var i = 0; i < this.pointJSON.length; i++) {
             var colorPair = this.graph_colorPairs[i % this.graph_colorPairs.length];
@@ -191,7 +196,7 @@ function LineChart() {
         return (value/this.matrix_scale_steps)*this.matrix_scale_size;
     }
 
-// automatically scalles the matrix by the max value
+// automatically scales the matrix height by the max value
     this.matrixAutoScale = function () {
         var max = 0;
         for (var i = 0; i < this.pointJSON.length; i++) {
@@ -203,6 +208,18 @@ function LineChart() {
         };
         this.matrix_scale_size = this.height*0.8/this.matrix_auto_scale_number_of_lines;
         this.matrix_scale_steps = max/this.matrix_auto_scale_number_of_lines;
+    }
+
+// automatically scales graph to the width of the graph to the size of the matrix
+    this.graphWidthAutoScale = function () {
+        var max_length = this.width - this.width * this.matrix_linePaddingLeft;
+        var max_numberOfPoints = 0;
+        for(var i = 0; i < this.pointJSON.length; i++) {
+            if(this.pointJSON[i].length > max_numberOfPoints) {
+                max_numberOfPoints = this.pointJSON[i].length;
+            }
+        }
+        this.graph_pointDelta = (max_length - this.graph_auto_scale_pointDelta_paddingRight)/(max_numberOfPoints - 1);
     }
 
 // rounds number to n digits
