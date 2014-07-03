@@ -85,7 +85,8 @@ height | total height of the chart | 200
 attribute | description | default value
 --- | --- | ---
 text_size | axis description text size | "15px"
-text_color | axis description text color | "rgba(0, 0, 255, 1)"
+text_color | axis description text color | "rgba(0, 0, 0, 1)"
+text_font | axis description text font | "ubuntu"
 text_x | x axis description text | "Pings"
 text_y | y axis description text | "Time (ms)"
 
@@ -174,7 +175,8 @@ height | total height of the chart | 200
 attribute | description | default value
 --- | --- | ---
 text_size | axis description text size | "15px"
-text_color | axis description text color | "rgba(0, 0, 255, 1)"
+text_color | axis description text color | "rgba(0, 0, 0, 1)"
+text_font | axis description text font | "ubuntu"
 text_x | x axis description text | "Pings"
 text_y | y axis description text | "Time (ms)"
 
