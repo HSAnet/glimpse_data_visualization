@@ -322,7 +322,9 @@ function LineChart() {
         var text_width = this.ctx.measureText(textVertical_text);
         this.ctx.font = textVertical_size + ' ' + this.text_font;
         this.ctx.fillStyle = textVertical_color;
+        this.ctx.save();
         this.ctx.rotate((-Math.PI / 2));
         this.ctx.fillText(textVertical_text, -(this.y + this.height / 2 + text_width.width / 2), this.x + 15);
+        this.ctx.restore();
     }
 }
